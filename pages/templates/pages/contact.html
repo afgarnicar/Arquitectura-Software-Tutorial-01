@@ -1,0 +1,56 @@
+{% extends 'pages/base.html' %}
+{% block title %} {{title}} {% endblock %}
+{% block header_title %} {{subtitle}} {% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">Get in Touch</h2>
+            <p class="lead">{{description}}</p>
+            
+            <div class="row mt-5">
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">📧 Email</h5>
+                            <p class="card-text">
+                                <a href="mailto:{{email}}" class="text-decoration-none">
+                                    {{email}}
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">📱 Phone</h5>
+                            <p class="card-text">
+                                <a href="tel:{{phone}}" class="text-decoration-none">
+                                    {{phone}}
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">📍 Address</h5>
+                            <p class="card-text">
+                                {{address}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="text-muted text-center mt-5">{{author}}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
