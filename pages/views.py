@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.views.generic import TemplateView, ListView
 from matplotlib.style import context
@@ -53,18 +54,6 @@ class ProductIndexView(View):
         return render(request, self.template_name, viewData)
     
     
-"""class ProductIndexView(View):
-    template_name = 'pages/products/index.html'
-    
-    def get(self, request):
-        viewData = {}
-        viewData["title"] = "Products - Online Store"
-        viewData["subtitle"] = "List of products"
-        viewData["products"] = Product.products
-        viewData["product_price"] = Product.products
-        
-        return render(request, self.template_name, viewData)"""
-    
 class ProductShowView(View): 
     template_name = 'pages/products/show.html'
 
@@ -88,14 +77,16 @@ class ProductShowView(View):
         
         return render(request, self.template_name, viewData)
 
-class ProductForm(forms.Form): 
-    name = forms.CharField(required=True) 
-    price = forms.FloatField(required=True)
+class ProductForm(forms.ModelForm): 
+    class Meta:
+        model = Product
+        fields = ['name', 'price']
+        
     
     def clean_price(self):
         price = self.cleaned_data.get('price')
         if price is not None and price <= 0:
-            raise forms.ValidationError("Price must be greater than zero")
+            raise ValidationError('Price must be greater than zero.')
         return price
     
 class ProductCreateView(View):
@@ -111,11 +102,8 @@ class ProductCreateView(View):
     def post(self, request):
         form = ProductForm(request.POST)
         if form.is_valid():
-            viewData = {}
-            viewData["title"] = "Success - Online Store"
-            viewData["subtitle"] = "Product Created"
-            viewData["message"] = "Product created"
-            return render(request, 'pages/products/success.html', viewData)
+            form.save()
+            return redirect('product-created')
         else:
             viewData = {}
             viewData["title"] = "Create product"
